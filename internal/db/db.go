@@ -83,12 +83,12 @@ WITH
             LIMIT ?
         )
     )
-SELECT A.word || ' ' || N.word AS phrase
+SELECT A.word, N.word
 FROM A, N
 WHERE A.num = N.num
 `
 
-func (s *Store) Phrases(n int) ([]string, error) {
+func (s *Store) Phrases(n int, delimiter string) ([]string, error) {
 	rows, err := s.db.Query(phrasesQuery, n, n)
 	if err != nil {
 		return nil, fmt.Errorf("query phrases: %w", err)
@@ -97,11 +97,11 @@ func (s *Store) Phrases(n int) ([]string, error) {
 
 	var out []string
 	for rows.Next() {
-		var phrase string
-		if err := rows.Scan(&phrase); err != nil {
+		var adj, noun string
+		if err := rows.Scan(&adj, &noun); err != nil {
 			return nil, fmt.Errorf("scan phrase: %w", err)
 		}
-		out = append(out, phrase)
+		out = append(out, adj+delimiter+noun)
 	}
 	if err := rows.Err(); err != nil {
 		return nil, fmt.Errorf("read phrases: %w", err)

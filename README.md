@@ -5,9 +5,26 @@ Console utility that prints random English phrases made of one adjective and one
 ## Usage
 
 ```text
-lexigen          # one phrase (default)
-lexigen 25       # 25 phrases, one per line on stdout
+lexigen [flags] [count]
 ```
+
+```text
+lexigen                    # one phrase (default)
+lexigen 25                 # 25 phrases, one per line on stdout
+lexigen -d _ 5             # use underscore between words
+lexigen 5 --delimiter=-    # hyphen between words
+lexigen -d "" 2            # no separator between adjective and noun
+lexigen -h                 # short help
+lexigen -v                 # print version
+```
+
+Flags:
+
+| Flag | Description |
+|------|-------------|
+| `-d`, `--delimiter <string>` | Text between adjective and noun (default: single space) |
+| `-h`, `--help` | Show usage and options |
+| `-v`, `--version` | Print program version |
 
 If `count` is greater than the number of words in the smaller dictionary table, the program exits with an error and prints nothing to stdout.
 
